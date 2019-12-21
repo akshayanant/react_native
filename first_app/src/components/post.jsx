@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   textItem: {
     padding: 5,
     marginVertical: 10,
-    width: "90%",
-    borderWidth: 0.5
+    borderWidth: 0.5,
+    flexDirection: "row"
   }
 });

@@ -1,11 +1,12 @@
 import React, { Component, useState } from "react";
-import { View, TextInput, StyleSheet, ScrollView } from "react-native";
+import { View, TextInput, StyleSheet, ScrollView, Button } from "react-native";
 
 import Post from "./post";
 import TextIn from "./textInput";
 
 function container() {
   const [messages, addMessage] = useState([]);
+  const [postMode, changePostMode] = useState(false);
 
   const handleAdd = text => {
     addMessage(messages => {
@@ -16,7 +17,7 @@ function container() {
       });
       return list;
     });
-    console.log(messages);
+    changePostMode(false);
   };
 
   handleDeletePost = id => {
@@ -25,20 +26,37 @@ function container() {
     });
   };
 
+  const handleMakePost = () => {
+    changePostMode(true);
+  };
+
+  const handleCancel = () => {
+    changePostMode(false);
+  };
+
   return (
     <View style={styles.mainContainer}>
-      <TextIn handleAdd={handleAdd} />
-      <ScrollView>
-        <View style={styles.textList}>
-          {messages.map(message => (
-            <Post
-              key={message.id}
-              message={message}
-              handleDeletePost={handleDeletePost}
-            />
-          ))}
-        </View>
-      </ScrollView>
+      <View style={styles.button}>
+        <Button title="Make Post" onPress={handleMakePost} />
+      </View>
+      <View style={styles.textList}>
+        <TextIn
+          handleAdd={handleAdd}
+          visible={postMode}
+          handleCancel={handleCancel}
+        />
+        <ScrollView>
+          <View>
+            {messages.map(message => (
+              <Post
+                key={message.id}
+                message={message}
+                handleDeletePost={handleDeletePost}
+              />
+            ))}
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 }
@@ -49,15 +67,18 @@ const styles = StyleSheet.create({
     width: "95%",
     paddingVertical: 10,
     marginTop: 40,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+
+  button: {
+    width: "50%"
   },
 
   textList: {
     paddingVertical: 10,
     marginVertical: 10,
     justifyContent: "space-around",
-    alignItems: "center",
-    borderWidth: 3,
-    borderColor: "dodgerblue"
+    width: "80%"
   }
 });
